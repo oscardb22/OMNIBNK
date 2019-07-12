@@ -1,0 +1,24 @@
+{% if request.user.is_superuser %}
+    <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+        <li class="active"><a href="{% url 'users:base' %}"><i class="la la-home"></i>
+            <span class="menu-title" data-i18n="">Administrativo</span></a>
+        </li>
+        <li class=" navigation-header">
+            <span data-i18n="nav.category.professional">Menu</span>
+            <i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Menu">
+            </i>
+        </li>
+
+        <li class=" menu-item"><a href="{% url 'users:rus' %}">
+            <i class="la la-users"></i>
+            <span class="menu-title" data-i18n="">Create user</span>
+        </a>
+
+        </li>
+        <li class=" menu-item"><a href="{% url 'users:lis_mov' %}">
+            <i class="la la-film"></i>
+            <span class="menu-title" data-i18n="">Movies</span>
+        </a>
+        </li>
+    </ul>
+{% endif %}

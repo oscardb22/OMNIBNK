@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block tit_cont %}{{ tit_cont }}{% endblock %}
+{% block sub_tit_cont %}{{ sub_tit_cont }}{% endblock %}
+{% block script %}
+    <script type="text/javascript">
+        $('#button-id-cancel').on('click', function (e) {
+            e.preventDefault();
+            window.history.back();
+        });
+    </script>
+{% endblock script %}
+{% block contenido %}
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-xl-12 col-lg-6 col-md-6 col-12">
+                <div class="card pull-up">
+                    <div class="card-content">
+                        <div class="card-body">
+                            <div class="media d-flex">
+                                <h4 class="card-title">{{ tit_cont }} {{ sub_tit_cont }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card pull-up">
+            <div class="card-body">
+                    <form id="masivo" class="form-horizontal" action="." method="POST">
+                    {% csrf_token %}
+
+                    <div class="card-action no-border text-center">
+                        {% if mensaje %}
+                            <span style="color: #2D3945">{{ mensaje }}</span>
+                        {% else %}
+                            <span style="color: #2D3945;"><b>SE ENCUENTRA SEGURO DE ELIMINAR ESTE REGISTRO: {{ object }}</b></span>
+                        {% endif %}
+                    </div>
+                    <br>
+                    <br>
+                    <div class="card-action no-border text-center">
+                        <input name="submit" value="Enviar" class="btn btn-primary"
+                               id="submit-id-submit" type="submit">
+
+                        <input name="cancel" value="Cancel" class="btn btn-default" id="button-id-cancel"
+                               autocomplete="off" type="button">
+                    </div>
+                    </form>
+                </div>
+        </div>
+    </div>
+{% endblock contenido %}

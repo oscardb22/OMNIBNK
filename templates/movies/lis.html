@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block tit_cont %}{{ tit_cont }}{% endblock %}
+{% block sub_tit_cont %}{{ sub_tit_cont }}{% endblock %}
+{% load humanize %}
+{% block script %}
+
+{% endblock script %}
+{% block contenido %}
+    <!-- PAGE CONTENT WRAPPER -->
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Configuration option table -->
+        <section id="configuration">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h4 class="card-title">{{ tit_cont }} {{ sub_tit_cont }}</h4>
+                  <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                  <div class="heading-elements">
+                    <ul class="list-inline mb-0">
+
+                    </ul>
+                  </div>
+
+                </div>
+
+                <div class="card-content collapse show">
+
+                  <div class="card-body card-dashboard">
+                    <form class="form-inline" role="form" method="get" action="">
+                        <div class="form-group">
+                              <input type="text" class="form-control" placeholder="Title" value="{{ nom }}" name="nom"/>
+                        </div>
+                        <button type="submit" class="btn btn-icon btn-info mr-1"><i class="la la-search"></i></button>
+                        <a href="{% url 'users:reg_mov' %}" class="btn btn-icon btn-success mr-1"  ><i class="ft-plus"></i>Creat</a>
+                    </form>
+                  <br><br>
+                   {% if is_paginated %}
+                    <div class="float-left">
+                        <ul class="pager">
+                            {% if page_obj.has_previous %}
+                                <li><a href="?page={{ page_obj.previous_page_number }}"><i class="ft-arrow-left"></i>Anterior</a></li>
+                            {% endif %}
+                            {% if page_obj.has_next %}
+                                <li><a href="?page={{ page_obj.next_page_number }}">Siguiente<i class="ft-arrow-right"></i></a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+
+                {% endif %}
+                   <div class="table-responsive">
+                    <table class="table  mb-0">
+                      <thead>
+                        <tr>
+                          <th>Title</th>
+                          <th>Recommended</th>
+                          <th>Picture</th>
+                          <th></th>
+                         </tr>
+                      </thead>
+                      <tbody>
+
+                      {% for lo in object_list %}
+
+                        <tr>
+                          <td>{{ lo.title }}</td>
+                          <td>
+                              {% if lo.recommended %}
+                                YES
+                              {% else %}
+                                NO
+                              {% endif %}
+                          </td>
+                          <td>
+                              {% if lo.picture %}
+                                  <img src="{{ lo.picture.url }}" width="24px" height="24px">
+                              {% endif %}
+                          </td>
+                          <td>
+                              <a href="{% url 'users:upd_mov' pk=lo.id %}" title="Update"><i class="ft-edit text-success"></i></a>
+                              <a href="{% url 'users:del_mov' pk=lo.id %}" title="Delete"><i class="ft-trash-2 ml-1 text-warning"></i></a>
+                          </td>
+
+                        </tr>
+                         {% empty %}
+                         <tr id="trow_1">
+                            <td colspan="=20">No hay datos</td>
+                         </tr>
+
+                      {% endfor %}
+                      </tbody>
+
+                    </table>
+                   </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+        <!--/ Configuration option table -->
+        </div>
+    </div>
+ {% endblock %}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+<!-- BEGIN: Head-->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <title>LOGIN - OMNIBNK TEST</title>
+    <link rel="apple-touch-icon" href="{{ STATIC_URL }}apple-icon-120.png">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ STATIC_URL }}favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
+
+    <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}login/css/vendors.min.css">
+    <!-- END: Vendor CSS-->
+
+    <!-- BEGIN: Theme CSS-->
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}login/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}login/css/bootstrap-extended.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}login/css/colors.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}login/css/components.css">
+    <!-- END: Theme CSS-->
+
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}login/css/vertical-menu.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}login/css/palette-gradient.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}login/css/login-register.css">
+    <!-- END: Page CSS-->
+
+    <!-- BEGIN: Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}login/css/style.css">
+    <!-- END: Custom CSS-->
+
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body class="vertical-layout vertical-menu 1-column  bg-full-screen-image blank-page" data-open="click" data-menu="vertical-menu" data-col="1-column">
+    <!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-wrapper">
+            <div class="content-header row mb-1">
+            </div>
+            <div class="content-body">
+                <section class="flexbox-container">
+                    <div class="col-12 d-flex align-items-center justify-content-center">
+                        <div class="col-lg-4 col-md-8 col-10 box-shadow-2 p-0">
+                            <div class="card border-grey border-lighten-3 px-1 py-1 m-0">
+                                <div class="card-header border-0">
+                                    <div class="card-title text-center">
+                                        <img src="{{ STATIC_URL }}logo-dark.png" alt="branding logo">
+                                    </div>
+                                    <h6 class="card-subtitle line-on-side text-muted text-center font-small-3 pt-2"><span>Login</span></h6>
+                                </div>
+                                <div class="card-content">
+                                    <div class="card-body">
+                                        <form class="form-horizontal" action="{% url 'users:login' %}" novalidate method="post">
+                                            {% csrf_token %}
+                                            <fieldset class="form-group position-relative has-icon-left">
+                                                <input type="text" class="form-control" id="user-name" placeholder="Your Username" required name="usu">
+                                                <div class="form-control-position">
+                                                    <i class="ft-user"></i>
+                                                </div>
+                                            </fieldset>
+                                            <fieldset class="form-group position-relative has-icon-left">
+                                                <input type="password" class="form-control" id="user-password" placeholder="Enter Password" required name="passwd">
+                                                <div class="form-control-position">
+                                                    <i class="la la-key"></i>
+                                                </div>
+                                            </fieldset>
+                                            <button type="submit" class="btn btn-outline-info btn-block"><i class="ft-unlock"></i> Login</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+    <!-- END: Content-->
+
+
+    <!-- BEGIN: Vendor JS-->
+    <script src="{{ STATIC_URL }}login/js/vendors.min.js"></script>
+    <!-- BEGIN Vendor JS-->
+
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="{{ STATIC_URL }}login/js/jqBootstrapValidation.js"></script>
+    <!-- END: Page Vendor JS-->
+    <script src="{{ STATIC_URL }}login/js/toastr.min.js" type="text/javascript"></script>
+    <!-- BEGIN: Theme JS-->
+    <script src="{{ STATIC_URL }}login/js/app-menu.js"></script>
+    <script src="{{ STATIC_URL }}login/js/app.js"></script>
+    <!-- END: Theme JS-->
+
+    <!-- BEGIN: Page JS-->
+    <script src="{{ STATIC_URL }}login/js/form-login-register.js"></script>
+    <!-- END: Page JS-->
+
+</body>
+<!-- END: Body-->
+
+</html>

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags humanize %}
+{% block tit_cont %}{{ tit_cont }}{% endblock %}
+{% block sub_tit_cont %}{{ sub_tit_cont }}{% endblock %}
+{% block contenido %}
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-xl-12 col-lg-6 col-md-6 col-12">
+                <div class="card pull-up">
+                    <div class="card-content">
+                        <div class="card-body">
+                            <div class="media d-flex">
+                                <h4 class="card-title">{{ tit_cont }} {{ sub_tit_cont }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card pull-up">
+            <div class="card-body">
+                {% if form.is_multipart %}
+                    <form id="masivo" class="form form-horizontal" role="form" enctype="multipart/form-data"
+                          method="POST" action=".">
+                {% else %}
+                    <form class="form form-horizontal" role="form" method="POST" action=".">
+                {% endif %}
+                {% csrf_token %}
+                <div class="form-body">
+                    {% crispy form %}
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock contenido %}
