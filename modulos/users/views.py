@@ -9,6 +9,15 @@ from .models import Users, Movie
 from modulos.auditor.views import log_actualizado, log_registro
 from django.urls import reverse_lazy
 
+from .serializers import UsersSerializer, MovieSerializer
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import BasicAuthentication
+from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView, RetrieveAPIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.shortcuts import get_object_or_404
+
 
 class Panel(TemplateView):
     template_name = "base.html"
@@ -188,3 +197,92 @@ class DelMov(DeleteView):
         context['tit_cont'] = 'Delete'
         context['sub_tit_cont'] = ' movies'
         return context
+
+
+# RESTFULAPI
+class ApiLogin(viewsets.ModelViewSet):
+    authentication_classes = (BasicAuthentication, )
+    permission_classes = (IsAuthenticated,)
+    queryset = Users.objects.all()
+    serializer_class = UsersSerializer
+
+
+# User
+class ApiRus(CreateAPIView):
+    serializer_class = UsersSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.pro = self.request.user
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        log_registro(serializer, self.request.user, {"fields": []})
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+# Movies
+class ApiLisMov(ListAPIView):
+    serializer_class = MovieSerializer
+
+    def get_queryset(self):
+        qs = Movie.objects.all()
+        nom = self.request.GET.get('nom', None)
+        if nom:
+            qs = qs.filter(title__icontains=nom)
+        return qs
+
+
+class ApiRegMov(CreateAPIView):
+    serializer_class = MovieSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def form_valid(self, form):
+        form.instance.title = form.instance.title.upper()
+        form.instance.cre = self.request.user
+        if form.has_changed:
+            log_registro(form.instance, self.request.user, {"fields": form.changed_data})
+        return super(RegMov, self).form_valid(form)
+
+
+class ApiUpdMov(UpdateAPIView):
+    serializer_class = MovieSerializer
+
+    def get_object(self):
+        qs = Movie.objects.get(pk=self.kwargs['pk'])
+        return qs
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        if instance.cre:
+            instance.cre = self.request.user
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            instance._prefetched_objects_cache = {}
+        log_actualizado(instance, self.request.user, {"fields": []})
+        return Response(serializer.data)
+
+
+class ApiDelMov(DestroyAPIView):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+
+    def get_object(self):
+        obj = get_object_or_404(Movie, id=self.kwargs['pk'])
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+
+class MovieDetail(RetrieveAPIView):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer

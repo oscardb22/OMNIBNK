@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     # PLUGINS
     'crispy_forms',
     'django.contrib.humanize',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -56,20 +57,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'OMNIBNK.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -104,3 +97,8 @@ if DEBUG:
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, "static")
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}
